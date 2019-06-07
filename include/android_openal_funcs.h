@@ -8,7 +8,7 @@ typedef struct {
   void (*alc_android_resume)();
   void (*alc_android_set_java_vm)(JavaVM*);
 } AndroidOpenALFuncs;
-AndroidOpenALFuncs androidOpenALFuncs;
+extern AndroidOpenALFuncs androidOpenALFuncs;
 
 #endif
 #endif

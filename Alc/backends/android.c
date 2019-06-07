@@ -7,6 +7,8 @@
 // #include "alMain.h"
 #include "android_openal_funcs.h"
 
+AndroidOpenALFuncs androidOpenALFuncs;
+
 static JavaVM *javaVM = NULL;
 JavaVM *alcGetJavaVM(void) {
 	return javaVM;
