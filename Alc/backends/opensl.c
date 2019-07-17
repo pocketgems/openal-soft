@@ -840,13 +840,18 @@ void alc_opensl_probe(enum DevProbe type)
 {
     char *error;
     struct stat statinfo;
-    if (stat("/system/lib/libOpenSLES.so", &statinfo) != 0) {
+#ifdef __aarch64__
+    const char* fileString = "/system/lib64/libOpenSLES.so";
+#else
+    const char* fileString = "/system/lib/libOpenSLES.so";
+#endif
+    if (stat(fileString, &statinfo) != 0) {
         TRACE("alc_opensl_probe OpenSLES support not found.");
         return;
     }
 
     dlerror(); // Clear dl errors
-    void *dlHandle = dlopen("/system/lib/libOpenSLES.so", RTLD_NOW | RTLD_GLOBAL);
+    void *dlHandle = dlopen(fileString, RTLD_NOW | RTLD_GLOBAL);
     if (!dlHandle || (error = (typeof(error))dlerror()) != NULL) {
         TRACE("OpenSLES could not be loaded.");
         return;
