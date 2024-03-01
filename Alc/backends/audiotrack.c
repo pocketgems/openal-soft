@@ -19,7 +19,7 @@
  */
 
 #include "config.h"
-
+#include "stdio.h"
 #include <stdlib.h>
 #include <jni.h>
 #include <pthread.h>
@@ -152,8 +152,12 @@ static void* thread_function(void* arg)
 
 static ALCenum android_open_playback(ALCdevice *device, const ALCchar *deviceName)
 {
+    printf("=========== android_open_playback CALLED ==============");
     JavaVM *javaVM = alcGetJavaVM();
+    printf("=========== javaVM INIT DONE Java VM =  %p JavaVM = %p ", &javaVM, javaVM);
+    printf("=========== javaVM INIT DONE Env = %p Env = %p ", &env, env);
     (*javaVM)->AttachCurrentThread(javaVM, &env, NULL);
+    printf("=========== AttachCurrentThread DONE ============= ");
     AndroidData* data;
     int channels;
     int bytes;
