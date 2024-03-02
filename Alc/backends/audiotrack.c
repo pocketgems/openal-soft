@@ -28,6 +28,7 @@
 #include "AL/al.h"
 #include "AL/alc.h"
 #include "alu.h"
+#include <android/log.h>
 
 #include "android_openal_funcs.h"
 
@@ -69,7 +70,7 @@ static void* thread_function(void* arg)
 {
     ALCdevice* device = (ALCdevice*)arg;
     AndroidData* data = (AndroidData*)device->ExtraData;
-    
+
     // Show a sensible name for the thread in debug tools
     prctl(PR_SET_NAME, (unsigned long)"OpenAL/AudioTrack", 0, 0, 0);
 
@@ -152,12 +153,12 @@ static void* thread_function(void* arg)
 
 static ALCenum android_open_playback(ALCdevice *device, const ALCchar *deviceName)
 {
-    printf("=========== android_open_playback CALLED ==============");
+    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON =======", "android_open_playback CALLED");
     JavaVM *javaVM = alcGetJavaVM();
-    printf("=========== javaVM INIT DONE Java VM =  %p JavaVM = %p ", &javaVM, javaVM);
-    printf("=========== javaVM INIT DONE Env = %p Env = %p ", &env, env);
+    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON =======", "javaVM INIT DONE Java VM =  %p JavaVM = %p ",&javaVM, javaVM);
+    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON =======", "javaVM INIT DONE Env = %p Env = %p ",&env, env);
     (*javaVM)->AttachCurrentThread(javaVM, &env, NULL);
-    printf("=========== AttachCurrentThread DONE ============= ");
+    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON =======", "AttachCurrentThread DONE");
     AndroidData* data;
     int channels;
     int bytes;
