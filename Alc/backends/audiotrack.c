@@ -153,12 +153,22 @@ static void* thread_function(void* arg)
 
 static ALCenum android_open_playback(ALCdevice *device, const ALCchar *deviceName)
 {
+    TRACE("======= WARDRAGON =======");
     __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON =======", "android_open_playback CALLED");
+
     JavaVM *javaVM = alcGetJavaVM();
+
+    TRACE("======= WARDRAGON ======= javaVM INIT DONE Java VM =  %p JavaVM = %p ",&javaVM, javaVM);
     __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON =======", "javaVM INIT DONE Java VM =  %p JavaVM = %p ",&javaVM, javaVM);
+
+    TRACE("======= WARDRAGON ======= javaVM INIT DONE javaVM INIT DONE Env = %p Env = %p ",&env, env);
     __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON =======", "javaVM INIT DONE Env = %p Env = %p ",&env, env);
+
     (*javaVM)->AttachCurrentThread(javaVM, &env, NULL);
+
+    TRACE("======= WARDRAGON ======= AttachCurrentThread DONE");
     __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON =======", "AttachCurrentThread DONE");
+
     AndroidData* data;
     int channels;
     int bytes;
