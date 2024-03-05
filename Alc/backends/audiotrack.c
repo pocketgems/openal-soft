@@ -153,21 +153,16 @@ static void* thread_function(void* arg)
 
 static ALCenum android_open_playback(ALCdevice *device, const ALCchar *deviceName)
 {
-    TRACE("======= WARDRAGON =======");
-    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON =======", "android_open_playback CALLED");
-
     JavaVM *javaVM = alcGetJavaVM();
 
-    TRACE("======= WARDRAGON ======= javaVM INIT DONE Java VM =  %p JavaVM = %p ",&javaVM, javaVM);
-    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON =======", "javaVM INIT DONE Java VM =  %p JavaVM = %p ",&javaVM, javaVM);
+    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON 1.5 =======", "javaVM INIT DONE JavaVM Address =  %p JavaVM value = %p ",&javaVM, javaVM);
+    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON 1.5 =======", "javaVM INIT DONE Env Address = %p Env Value = %p ",&env, env);
 
-    TRACE("======= WARDRAGON ======= javaVM INIT DONE javaVM INIT DONE Env = %p Env = %p ",&env, env);
-    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON =======", "javaVM INIT DONE Env = %p Env = %p ",&env, env);
+    if (javaVM) (*javaVM)->GetEnv(javaVM, (void**)&env, JNI_VERSION_1_4);
 
-    (*javaVM)->AttachCurrentThread(javaVM, &env, NULL);
+    if (javaVM) (*javaVM)->AttachCurrentThread(javaVM, &env, NULL);
 
-    TRACE("======= WARDRAGON ======= AttachCurrentThread DONE");
-    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON =======", "AttachCurrentThread DONE");
+    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON 1.5 =======", "AttachCurrentThread DONE");
 
     AndroidData* data;
     int channels;
