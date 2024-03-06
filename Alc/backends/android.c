@@ -23,6 +23,7 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON =======", "JNI_OnLoad called  vm Address : %p  vm value : %p ",&vm, vm);
 	// BackendFuncs func_list;
 	if (androidOpenALFuncs.alc_android_set_java_vm) {
+        __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON =======", "JNI_OnLoad alc_android_set_java_vm is not NULL");
 		androidOpenALFuncs.alc_android_set_java_vm(vm);
 	}
 	javaVM = vm;
