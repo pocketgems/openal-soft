@@ -752,10 +752,10 @@ void alc_opensl_resume()
 
 static void alc_opensl_set_java_vm(JavaVM *vm)
 {
-    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON 1.5 =======", "alc_opensl_set_java_vm CALLED vm Address =  %p vm value = %p ",&vm, vm);
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-OpenSL ===", "alc_opensl_set_java_vm vm Address  %p vm %p ",&vm, vm);
     // Called once and only once from JNI_OnLoad
     javaVM = vm;
-    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON 1.5 =======", "OpenSL Assigned javaVm Address %p value %p  ",&javaVM, javaVM);
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-OpenSL ===", "alc_opensl_set_java_vm javaVm Address %p javaVm %p  ",&javaVM, javaVM);
     int i;
     char *android_model;
     char *low_buffer_models[] = {
@@ -790,7 +790,7 @@ static void alc_opensl_set_java_vm(JavaVM *vm)
 			premixCount = 1;
 		}
         android_model = alc_opensl_get_android_model();
-        __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON 1.5 =======", "android_model =  %s ",android_model);
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-OpenSL ===", "alc_opensl_set_java_vm android_model =  %s ",android_model);
         for (i = 0; low_buffer_models[i] != NULL; i++) {
             if (strncmp(android_model, low_buffer_models[i], strlen(low_buffer_models[i])) == 0) {
                 TRACE("Using less buffering");
@@ -803,33 +803,34 @@ static void alc_opensl_set_java_vm(JavaVM *vm)
 	}
     else
     {
-        __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON 1.5 =======", "OpenSL Else Part - javaVM =  %p ",javaVM);
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-OpenSL ===", "alc_opensl_set_java_vm Else Part - javaVM %p ",javaVM);
     }
 }
 
 ALCboolean alc_opensl_init(BackendFuncs *func_list)
 {
     TRACE("alc_opensl_init");
-    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON 1.5 =======", "alc_opensl_init CALLED");
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-OpenSL ===", "alc_opensl_init");
     struct stat statinfo;
     if (stat("/system/lib/libOpenSLES.so", &statinfo) != 0) {
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-OpenSL ===", "alc_opensl_init statinfo not found!");
         return ALC_FALSE;
     }
-
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-OpenSL ===", "alc_opensl_init statinfo found");
     *func_list = opensles_funcs;
 
 	// We need the JavaVM for JNI so we can detect the OS version number at runtime.
 	// This is because we need to use different bufferCount values for Android 4.1 vs. pre-4.1.
 	// This must be set at constructor time before JNI_OnLoad is invoked.
 	androidOpenALFuncs.alc_android_set_java_vm = alc_opensl_set_java_vm;
-    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON 1.5 =======", "return ALC_TRUE");
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-OpenSL ===", "alc_opensl_init return ALC_TRUE");
     return ALC_TRUE;
 }
 
 void alc_opensl_deinit(void)
 {
     TRACE("alc_opensl_deinit");
-
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-OpenSL ===", "alc_opensl_deinit");
     // destroy output mix object, and invalidate all associated interfaces
     if (outputMixObject != NULL) {
         (*outputMixObject)->Destroy(outputMixObject);

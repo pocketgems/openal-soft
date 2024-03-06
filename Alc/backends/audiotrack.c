@@ -75,7 +75,7 @@ static void* thread_function(void* arg)
     prctl(PR_SET_NAME, (unsigned long)"OpenAL/AudioTrack", 0, 0, 0);
 
     JavaVM *javaVM = alcGetJavaVM();
-    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON 1.5 =======", "thread_function CALLED javaVM Address =  %p JavaVM value = %p ",&javaVM, javaVM);
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "thread_function javaVM Address %p JavaVM  %p ",&javaVM, javaVM);
     (*javaVM)->AttachCurrentThread(javaVM, &env, NULL);
 
     (*env)->PushLocalFrame(env, 2);
@@ -156,14 +156,14 @@ static ALCenum android_open_playback(ALCdevice *device, const ALCchar *deviceNam
 {
     JavaVM *javaVM = alcGetJavaVM();
 
-    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON 1.5 =======", "javaVM INIT DONE JavaVM Address =  %p JavaVM value = %p ",&javaVM, javaVM);
-    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON 1.5 =======", "javaVM INIT DONE Env Address = %p Env Value = %p ",&env, env);
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback JavaVM Address  %p JavaVM %p ",&javaVM, javaVM);
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback Env Address %p Env %p ",&env, env);
 
     if (javaVM) (*javaVM)->GetEnv(javaVM, (void**)&env, JNI_VERSION_1_4);
 
     if (javaVM) (*javaVM)->AttachCurrentThread(javaVM, &env, NULL);
 
-    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON 1.5 =======", "AttachCurrentThread DONE");
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback AttachCurrentThread DONE");
 
     AndroidData* data;
     int channels;
@@ -358,7 +358,7 @@ void alc_audiotrack_deinit(void)
 {
     /* release cached AudioTrack class */
     JavaVM *javaVM = alcGetJavaVM();
-    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON 1.5 =======", "alc_audiotrack_deinit CALLED javaVM Address =  %p JavaVM value = %p ",&javaVM, javaVM);
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "alc_audiotrack_deinit javaVM Address  %p JavaVM %p ",&javaVM, javaVM);
     (*env)->DeleteGlobalRef(env, cAudioTrack);
     (*javaVM)->DetachCurrentThread(javaVM);
     cAudioTrack = NULL;
