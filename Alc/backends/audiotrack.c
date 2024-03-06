@@ -75,6 +75,7 @@ static void* thread_function(void* arg)
     prctl(PR_SET_NAME, (unsigned long)"OpenAL/AudioTrack", 0, 0, 0);
 
     JavaVM *javaVM = alcGetJavaVM();
+    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON 1.5 =======", "thread_function CALLED javaVM Address =  %p JavaVM value = %p ",&javaVM, javaVM);
     (*javaVM)->AttachCurrentThread(javaVM, &env, NULL);
 
     (*env)->PushLocalFrame(env, 2);
@@ -357,6 +358,7 @@ void alc_audiotrack_deinit(void)
 {
     /* release cached AudioTrack class */
     JavaVM *javaVM = alcGetJavaVM();
+    __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON 1.5 =======", "alc_audiotrack_deinit CALLED javaVM Address =  %p JavaVM value = %p ",&javaVM, javaVM);
     (*env)->DeleteGlobalRef(env, cAudioTrack);
     (*javaVM)->DetachCurrentThread(javaVM);
     cAudioTrack = NULL;
