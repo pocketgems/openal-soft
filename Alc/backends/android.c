@@ -26,7 +26,7 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
 		androidOpenALFuncs.alc_android_set_java_vm(vm);
 	}
 	javaVM = vm;
-    *v_javaVM = *javaVM;
+    v_javaVM = vm;
     __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON =======", "javaVM assigned  javaVM address : %p  javaVM value : %p ",&javaVM, javaVM);
     __android_log_print(ANDROID_LOG_INFO, "======= WARDRAGON =======", "v_javaVM assigned  v_javaVM address : %p  v_javaVM value : %p ",&v_javaVM, v_javaVM);
 	return JNI_VERSION_1_4;
