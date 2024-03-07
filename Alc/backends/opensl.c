@@ -72,11 +72,11 @@ MAKE_SYM_POINTER(slCreateEngine);
 }
 
 // The max backtrace size for allocations bigger than LARGE_ALLOCATION
-//#define MAX_BT_SIZE 40 // NOTE : 40 is hardcoded in debug_util.c get_backtrace_pcs_skip()
-//
-//#define MAX_BT_SIZE_SMALL_ALLOC 40
-//
-//typedef backtrace_pointer_t bt_pointer_t;
+#define MAX_BT_SIZE 40 // NOTE : 40 is hardcoded in debug_util.c get_backtrace_pcs_skip()
+
+#define MAX_BT_SIZE_SMALL_ALLOC 40
+
+typedef backtrace_pointer_t bt_pointer_t;
 
 // engine interfaces
 static SLObjectItf engineObject = NULL;
@@ -88,33 +88,33 @@ static SLObjectItf outputMixObject = NULL;
 // JNI stuff so we can get the runtime OS version number
 static JavaVM* javaVM = NULL;
 
-//typedef struct {
-//    uint8_t type; // Needs to be 'm'
-//    uint8_t flags;
-//    uint32_t pointer;
-//    uint32_t allocationSize;
-//    uint32_t threadId;
-//    uint32_t packetSize;
-//    // Followed by packetSize / 4 function addresses
-//} memtrace_header;
+typedef struct {
+    uint8_t type; // Needs to be 'm'
+    uint8_t flags;
+    uint32_t pointer;
+    uint32_t allocationSize;
+    uint32_t threadId;
+    uint32_t packetSize;
+    // Followed by packetSize / 4 function addresses
+} memtrace_header;
 
-//void CallBackTrace(char *methodName)
-//{
-//    char buf[sizeof(memtrace_header) + MAX_BT_SIZE * sizeof(bt_pointer_t)];
-//
-//    bt_pointer_t *pointers = (void*)(buf + sizeof(memtrace_header));
-//
-//    int pointerCount = MAX_BT_SIZE;
-//
-//    get_backtrace_pcs(pointers, &pointerCount);
-//
-//    if(pointerCount>0)
-//    {
-//        for (int i = 0; i < pointerCount; ++i) {
-//            __android_log_print(ANDROID_LOG_INFO, "=== WD-opensl-Trace ===", "%s %s ", methodName, pointers[i]);
-//        }
-//    }
-//}
+void CallBackTrace(char *methodName)
+{
+    char buf[sizeof(memtrace_header) + MAX_BT_SIZE * sizeof(bt_pointer_t)];
+
+    bt_pointer_t *pointers = (void*)(buf + sizeof(memtrace_header));
+
+    int pointerCount = MAX_BT_SIZE;
+
+    get_backtrace_pcs(pointers, &pointerCount);
+
+    if(pointerCount>0)
+    {
+        for (int i = 0; i < pointerCount; ++i) {
+            __android_log_print(ANDROID_LOG_INFO, "=== WD-opensl-Trace ===", "%s %s ", methodName, pointers[i]);
+        }
+    }
+}
 
 static int alc_opensl_get_android_api()
 {
@@ -850,7 +850,7 @@ static void alc_opensl_set_java_vm(JavaVM *vm)
 
 ALCboolean alc_opensl_init(BackendFuncs *func_list)
 {
-//    CallBackTrace("alc_opensl_init");
+    CallBackTrace("alc_opensl_init");
     TRACE("alc_opensl_init");
     __android_log_print(ANDROID_LOG_INFO, "=== WD-OpenSL ===", "alc_opensl_init");
     struct stat statinfo;
