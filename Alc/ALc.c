@@ -26,6 +26,7 @@
 #include <memory.h>
 #include <ctype.h>
 #include <signal.h>
+#include <android/log.h>
 
 #include "alMain.h"
 #include "alSource.h"
@@ -2682,6 +2683,8 @@ ALC_API ALCdevice* ALC_APIENTRY alcGetContextsDevice(ALCcontext *Context)
  */
 ALC_API ALCdevice* ALC_APIENTRY alcOpenDevice(const ALCchar *deviceName)
 {
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-ALc ===", "alcOpenDevice Entered");
+
     const ALCchar *fmt;
     ALCdevice *device;
     ALCenum err;
@@ -2886,6 +2889,7 @@ ALC_API ALCdevice* ALC_APIENTRY alcOpenDevice(const ALCchar *deviceName)
     // Find a playback device to open
     if((err=ALCdevice_OpenPlayback(device, deviceName)) != ALC_NO_ERROR)
     {
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-ALc ===", "ALCdevice_OpenPlayback result error!");
         DeleteCriticalSection(&device->Mutex);
         al_free(device);
         alcSetError(NULL, err);
