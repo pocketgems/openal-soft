@@ -2886,13 +2886,12 @@ ALC_API ALCdevice* ALC_APIENTRY alcOpenDevice(const ALCchar *deviceName)
     device->NumStereoSources = 1;
     device->NumMonoSources = device->MaxNoOfSources - device->NumStereoSources;
 
-    __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", " Before device %p, \"%s\"\n", device, device->DeviceName);
-    err=ALCdevice_OpenPlayback(device, deviceName);
-    __android_log_print(ANDROID_LOG_INFO, "=== WD-ALc ===", "ALCdevice_OpenPlayback result error! %s ", err);
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-ALc ===", " Before OpenPlayback device %p, \"%s\"\n", device, device->DeviceName);
+
     // Find a playback device to open
-    if(err != ALC_NO_ERROR)
+    if((err=ALCdevice_OpenPlayback(device, deviceName)) != ALC_NO_ERROR)
     {
-        __android_log_print(ANDROID_LOG_INFO, "=== WD-ALc ===", "ALCdevice_OpenPlayback result error!");
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-ALc ===", "After OpenPlayback result %d", err);
         DeleteCriticalSection(&device->Mutex);
         al_free(device);
         alcSetError(NULL, err);
