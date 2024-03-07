@@ -69,39 +69,39 @@ typedef struct
 #define MODE_STREAM 1
 
 // The max backtrace size for allocations bigger than LARGE_ALLOCATION
-#define MAX_BT_SIZE 40 // NOTE : 40 is hardcoded in debug_util.c get_backtrace_pcs_skip()
+//#define MAX_BT_SIZE 40 // NOTE : 40 is hardcoded in debug_util.c get_backtrace_pcs_skip()
+//
+//#define MAX_BT_SIZE_SMALL_ALLOC 40
+//
+//typedef backtrace_pointer_t bt_pointer_t;
+//
+//typedef struct {
+//    uint8_t type; // Needs to be 'm'
+//    uint8_t flags;
+//    uint32_t pointer;
+//    uint32_t allocationSize;
+//    uint32_t threadId;
+//    uint32_t packetSize;
+//    // Followed by packetSize / 4 function addresses
+//} memtrace_header;
 
-#define MAX_BT_SIZE_SMALL_ALLOC 40
-
-typedef backtrace_pointer_t bt_pointer_t;
-
-typedef struct {
-    uint8_t type; // Needs to be 'm'
-    uint8_t flags;
-    uint32_t pointer;
-    uint32_t allocationSize;
-    uint32_t threadId;
-    uint32_t packetSize;
-    // Followed by packetSize / 4 function addresses
-} memtrace_header;
-
-void CallBackTrace(char *methodName)
-{
-    char buf[sizeof(memtrace_header) + MAX_BT_SIZE * sizeof(bt_pointer_t)];
-
-    bt_pointer_t *pointers = (void*)(buf + sizeof(memtrace_header));
-
-    int pointerCount = MAX_BT_SIZE;
-
-    get_backtrace_pcs(pointers, &pointerCount);
-
-    if(pointerCount>0)
-    {
-        for (int i = 0; i < pointerCount; ++i) {
-            __android_log_print(ANDROID_LOG_INFO, "=== WD-audiotrack-Trace ===", "%s %s ", methodName, pointers[i]);
-        }
-    }
-}
+//void CallBackTrace(char *methodName)
+//{
+//    char buf[sizeof(memtrace_header) + MAX_BT_SIZE * sizeof(bt_pointer_t)];
+//
+//    bt_pointer_t *pointers = (void*)(buf + sizeof(memtrace_header));
+//
+//    int pointerCount = MAX_BT_SIZE;
+//
+//    get_backtrace_pcs(pointers, &pointerCount);
+//
+//    if(pointerCount>0)
+//    {
+//        for (int i = 0; i < pointerCount; ++i) {
+//            __android_log_print(ANDROID_LOG_INFO, "=== WD-audiotrack-Trace ===", "%s %s ", methodName, pointers[i]);
+//        }
+//    }
+//}
 
 
 static void* thread_function(void* arg)
@@ -192,7 +192,7 @@ static void* thread_function(void* arg)
 
 static ALCenum android_open_playback(ALCdevice *device, const ALCchar *deviceName)
 {
-    CallBackTrace("android_open_playback");
+//    CallBackTrace("android_open_playback");
 
     JavaVM *javaVM = alcGetJavaVM();
 
@@ -404,7 +404,7 @@ ALCboolean alc_audiotrack_init(BackendFuncs *func_list)
 
 void alc_audiotrack_deinit(void)
 {
-    CallBackTrace("alc_audiotrack_deinit");
+//    CallBackTrace("alc_audiotrack_deinit");
     /* release cached AudioTrack class */
     JavaVM *javaVM = alcGetJavaVM();
     __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "alc_audiotrack_deinit javaVM Address  %p JavaVM %p ",&javaVM, javaVM);
