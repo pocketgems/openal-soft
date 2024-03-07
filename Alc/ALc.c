@@ -2886,8 +2886,11 @@ ALC_API ALCdevice* ALC_APIENTRY alcOpenDevice(const ALCchar *deviceName)
     device->NumStereoSources = 1;
     device->NumMonoSources = device->MaxNoOfSources - device->NumStereoSources;
 
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", " Before device %p, \"%s\"\n", device, device->DeviceName);
+    err=ALCdevice_OpenPlayback(device, deviceName);
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-ALc ===", "ALCdevice_OpenPlayback result error! %s ", err);
     // Find a playback device to open
-    if((err=ALCdevice_OpenPlayback(device, deviceName)) != ALC_NO_ERROR)
+    if(err != ALC_NO_ERROR)
     {
         __android_log_print(ANDROID_LOG_INFO, "=== WD-ALc ===", "ALCdevice_OpenPlayback result error!");
         DeleteCriticalSection(&device->Mutex);
@@ -2903,20 +2906,24 @@ ALC_API ALCdevice* ALC_APIENTRY alcOpenDevice(const ALCchar *deviceName)
         {
             device->DefaultSlot = NULL;
             ERR("Failed to initialize the default effect slot\n");
+            __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", " Failed to initialize the default effect slot");
         }
         else if(InitializeEffect(device, device->DefaultSlot, &DefaultEffect) != AL_NO_ERROR)
         {
             ALeffectState_Destroy(device->DefaultSlot->EffectState);
             device->DefaultSlot = NULL;
             ERR("Failed to initialize the default effect\n");
+            __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", " Failed to initialize the default effect");
         }
     }
 
     do {
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", " device->next = DeviceList");
         device->next = DeviceList;
     } while(!CompExchangePtr((XchgPtr*)&DeviceList, device->next, device));
 
     TRACE("Created device %p, \"%s\"\n", device, device->DeviceName);
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "Created device %p, \"%s\"\n", device, device->DeviceName);
     return device;
 }
 

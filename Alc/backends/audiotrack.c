@@ -196,10 +196,11 @@ static ALCenum android_open_playback(ALCdevice *device, const ALCchar *deviceNam
 
     JavaVM *javaVM = alcGetJavaVM();
 
-    __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback JavaVM Address  %p JavaVM %p ",&javaVM, javaVM);
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback BEFORE JavaVM Address  %p JavaVM %p ",&javaVM, javaVM);
     __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback Env Address %p Env %p ",&env, env);
 
     if (javaVM) (*javaVM)->GetEnv(javaVM, (void**)&env, JNI_VERSION_1_4);
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback AFTER JavaVM Address  %p JavaVM %p ",&javaVM, javaVM);
 
     if (javaVM)
     {
@@ -208,7 +209,7 @@ static ALCenum android_open_playback(ALCdevice *device, const ALCchar *deviceNam
     else // This is to avoid crash on android devices getting JavaVM as null
     {
         __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "javaVM NULL");
-        return ALC_FALSE;
+        return ALC_TRUE;
     }
 
     __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback AttachCurrentThread DONE");
