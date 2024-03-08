@@ -220,40 +220,66 @@ static ALCenum android_open_playback(ALCdevice *device, const ALCchar *deviceNam
 
     if (!cAudioTrack)
     {
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback cAudioTrack not NULL");
+
         /* Cache AudioTrack class and it's method id's
          * And do this only once!
          */
 
         cAudioTrack = (*env)->FindClass(env, "android/media/AudioTrack");
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback cAudioTrack %c",cAudioTrack);
         if (!cAudioTrack)
         {
+            __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback cAudioTrack Not found");
             TRACE("android.media.AudioTrack class is not found. Are you running at least 1.5 version?");
             return ALC_FALSE;
         }
 
         cAudioTrack = (*env)->NewGlobalRef(env, cAudioTrack);
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback cAudioTrack NewGlobalRef %p",cAudioTrack);
 
         mAudioTrack = (*env)->GetMethodID(env, cAudioTrack, "<init>", "(IIIIII)V");
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback mAudioTrack %p",mAudioTrack);
+
         mGetMinBufferSize = (*env)->GetStaticMethodID(env, cAudioTrack, "getMinBufferSize", "(III)I");
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback mGetMinBufferSize %d",mGetMinBufferSize);
+
         mPlay = (*env)->GetMethodID(env, cAudioTrack, "play", "()V");
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback mPlay %s",mPlay);
+
         mPause = (*env)->GetMethodID(env, cAudioTrack, "pause", "()V");
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback mPause %s",mPause);
+
         mStop = (*env)->GetMethodID(env, cAudioTrack, "stop", "()V");
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback mStop %s",mStop);
+
         mRelease = (*env)->GetMethodID(env, cAudioTrack, "release", "()V");
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback mRelease %s",mRelease);
+
         mWrite = (*env)->GetMethodID(env, cAudioTrack, "write", "([BII)I");
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback mWrite %s",mWrite);
     }
+
 
     if (!deviceName)
     {
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback before deviceName %s",deviceName);
         deviceName = android_device;
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback after deviceName %s",deviceName);
     }
     else if (strcmp(deviceName, android_device) != 0)
     {
+        __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback else return ALC_FALSE");
         return ALC_FALSE;
     }
 
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback before data");
     data = (AndroidData*)calloc(1, sizeof(*data));
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback after data %p",data);
     device->DeviceName = strdup(deviceName);
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback after device %p",device);
     device->ExtraData = data;
+    __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback last return ALC_NO_ERROR");
     return ALC_NO_ERROR;
 }
 
