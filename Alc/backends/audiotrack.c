@@ -153,7 +153,14 @@ static void* thread_function(void* arg)
 static ALCenum android_open_playback(ALCdevice *device, const ALCchar *deviceName)
 {
     JavaVM *javaVM = alcGetJavaVM();
-    (*javaVM)->AttachCurrentThread(javaVM, &env, NULL);
+    if (javaVM)
+    {
+        (*javaVM)->AttachCurrentThread(javaVM, &env, NULL);
+    }
+    else // This is to avoid crash on android devices getting JavaVM null
+    {
+        return ALC_INVALID_VALUE;
+    }
     AndroidData* data;
     int channels;
     int bytes;
