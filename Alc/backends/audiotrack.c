@@ -206,11 +206,11 @@ static ALCenum android_open_playback(ALCdevice *device, const ALCchar *deviceNam
     {
         (*javaVM)->AttachCurrentThread(javaVM, &env, NULL);
     }
-    else // This is to avoid crash on android devices getting JavaVM as null
-    {
-        __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "javaVM NULL");
-        return ALC_TRUE;
-    }
+//    else // This is to avoid crash on android devices getting JavaVM as null
+//    {
+//        __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "javaVM NULL");
+//        return ALC_TRUE;
+//    }
 
     __android_log_print(ANDROID_LOG_INFO, "=== WD-AudioTrack ===", "android_open_playback AttachCurrentThread DONE");
 

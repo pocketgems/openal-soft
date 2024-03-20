@@ -49,15 +49,13 @@
 AndroidOpenALFuncs androidOpenALFuncs;
 
 static JavaVM *javaVM = NULL;
-static JavaVM *v_javaVM = NULL;
 JavaVM *alcGetJavaVM(void) {
     __android_log_print(ANDROID_LOG_INFO, "=== WD-Android ===", "alcGetJavaVM javaVM Address %p javaVM %p ",&javaVM, javaVM);
-    __android_log_print(ANDROID_LOG_INFO, "=== WD-Android ===", "alcGet_vJavaVM v_javaVM Address %p v_javaVM %p ",&v_javaVM, v_javaVM);
 	return javaVM;
 }
 
 jint JNI_OnLoad(JavaVM *vm, void *reserved) {
-//    CallBackTrace("android.c - JNI_OnLoad");
+    //    CallBackTrace("android.c - JNI_OnLoad");
     __android_log_print(ANDROID_LOG_INFO, "=== WD-Android ===", "JNI_OnLoad vm Address : %p  vm : %p ",&vm, vm);
     __android_log_print(ANDROID_LOG_INFO, "=== WD-Android ===", "JNI_OnLoad javaVM Address : %p  javaVM : %p ",&javaVM, javaVM);
 	// BackendFuncs func_list;
@@ -65,10 +63,8 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
         __android_log_print(ANDROID_LOG_INFO, "=== WD-Android ===", "JNI_OnLoad alc_android_set_java_vm is not NULL");
 		androidOpenALFuncs.alc_android_set_java_vm(vm);
 	}
-	javaVM = vm;
-    v_javaVM = vm;
+        javaVM = vm;
     __android_log_print(ANDROID_LOG_INFO, "=== WD-Android ===", "javaVM assigned  javaVM address : %p  javaVM : %p ",&javaVM, javaVM);
-    __android_log_print(ANDROID_LOG_INFO, "=== WD-Android ===", "v_javaVM assigned  v_javaVM address : %p  v_javaVM : %p ",&v_javaVM, v_javaVM);
 	return JNI_VERSION_1_4;
 }
 

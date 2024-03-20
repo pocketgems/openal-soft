@@ -853,8 +853,13 @@ ALCboolean alc_opensl_init(BackendFuncs *func_list)
     CallBackTrace("alc_opensl_init");
     TRACE("alc_opensl_init");
     __android_log_print(ANDROID_LOG_INFO, "=== WD-OpenSL ===", "alc_opensl_init");
+#ifdef __aarch64__
+    const char* fileString = "/system/lib64/libOpenSLES.so";
+#else
+    const char* fileString = "/system/lib/libOpenSLES.so";
+#endif
     struct stat statinfo;
-    if (stat("/system/lib/libOpenSLES.so", &statinfo) != 0) {
+    if (stat(fileString, &statinfo) != 0) {
         __android_log_print(ANDROID_LOG_INFO, "=== WD-OpenSL ===", "alc_opensl_init statinfo not found!");
         return ALC_FALSE;
     }
