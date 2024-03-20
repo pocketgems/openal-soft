@@ -802,9 +802,13 @@ static void alc_opensl_set_java_vm(JavaVM *vm)
 ALCboolean alc_opensl_init(BackendFuncs *func_list)
 {
     TRACE("alc_opensl_init");
-
+#ifdef __aarch64__
+    const char* fileString = "/system/lib64/libOpenSLES.so";
+#else
+    const char* fileString = "/system/lib/libOpenSLES.so";
+#endif
     struct stat statinfo;
-    if (stat("/system/lib/libOpenSLES.so", &statinfo) != 0) {
+    if (stat(fileString, &statinfo) != 0) {
         return ALC_FALSE;
     }
 
